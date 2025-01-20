@@ -1,4 +1,4 @@
-name: Deploy for ci/cd
+name: backend for ci/cd
 
 # 트리거
 on:
@@ -36,6 +36,10 @@ jobs:
       # application.yml 원칙생성
       # 소스코드내에 위치(덮어쓰기, 신규작성)
       # RDS 세팅된 이후 진행
+      - name: application.properties 동적 생성
+        run: |
+          echo "${{ secrets.APPLICATION_PRO }}" > ./src/main/resources/application.properties
+          ls ./src/main/resources/
 
       # build 준비
       # chmod +x ./gradlew : 퍼미션 오류 발생시 처리
@@ -53,9 +57,6 @@ jobs:
         run: |
           chmod +x ./gradlew
           ./gradlew clean build
-          pwd
-          ls
-          ls ./build/libs
 
       # 이름이 너무 길므로 적당하게 수정 -> 리눅스 명령어
       # 파일 위치를 변경하면서 이름도 변경 -> mv
